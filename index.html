@@ -1,311 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Projects Task Manager</title>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 30px;
-            margin-top: 50px;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 30px;
+        margin-top: 50px;
+      }
 
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            max-width: 500px;
-            width: 100%;
-            margin: 5px;
-            
-            
-            
-        }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 100%;
+        margin: 5px;
+      }
 
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 24px;
-        }
+      h1 {
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 24px;
+      }
 
-        .sortlist {
-            list-style: none;
-            padding: 10px;
-        }
+      .sortlist {
+        list-style: none;
+        padding: 10px;
+      }
 
-        .sortlist li {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 20px;
-            margin: 10px 0;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+      .sortlist li {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 15px 20px;
+        margin: 10px 0;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
 
-        }
+      .sortlist li span:not(.handle) {
+        flex: 1;
+        margin-right: 15px;
+      }
 
-        .sortlist li span:not(.handle) {
-            flex: 1;
-            margin-right: 15px;
-        }
-                   
-        .sortlist li:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
+      .sortlist li:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
 
-        /* Style for when item is being dragged */
-        .sortable-ghost {
-            opacity: 0.4;
-            background: #ccc;
-        }
+      /* Style for when item is being dragged */
+      .sortable-ghost {
+        opacity: 0.4;
+        background: #ccc;
+      }
 
-        /* Style for the chosen/selected item */
-        .sortable-chosen {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
+      /* Style for the chosen/selected item */
+      .sortable-chosen {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
 
-        /* Style while dragging */
-        .sortable-drag {
-            opacity: 0.8;
-        }
+      /* Style while dragging */
+      .sortable-drag {
+        opacity: 0.8;
+      }
 
-        .handle {
-            cursor: move;
-            margin-right: 15px;
-        }
+      .handle {
+        cursor: move;
+        margin-right: 15px;
+      }
 
-        .handle:active {
-            cursor: grabbing;
-        }
+      .handle:active {
+        cursor: grabbing;
+      }
 
-        .delbtn {
-            font-size: 14px;
-            border-radius: 5px;
-            padding: 3px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            flex-shrink: 0;           
-        }
+      .delbtn {
+        font-size: 14px;
+        border-radius: 5px;
+        padding: 3px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        flex-shrink: 0;
+      }
 
-        .delbtn:hover {
-            background: red;
-        }
+      .delbtn:hover {
+        background: red;
+      }
 
-        .addbtn {
-            display: block;
-            width: 66%;
-            padding: 5px;
-            margin: 0 auto 5px auto;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            
-        }
+      .addbtn {
+        display: block;
+        width: 66%;
+        padding: 5px;
+        margin: 0 auto 5px auto;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+      }
 
-        .addbtn:hover {
-            background: #5568d3;
-        }
+      .addbtn:hover {
+        background: #5568d3;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+      }
+      .modal-active {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-backdrop {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+      }
+      .modal-content {
+        position: relative;
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        width: 400px;
+        max-width: 90%;
+        z-index: 1001;
+      }
     </style>
-</head>
-<body>
-    
+  </head>
+  <body>
     <div class="container">
-        <h1>📆 Awaiting</h1>
-        <button class="addbtn" onclick="addItem('list1')">+ Add Project</button>
-        <ul id="list1" class="sortlist">
-            <!-- <li><span class="handle">☰</span><span>Faith and Life</span><button class="delbtn">DELETE</button></li> -->
-            
-        </ul>
+      <h1>📆 Awaiting</h1>
+      <button class="addbtn" onclick="addItem('list1')">+ Add Project</button>
+      <ul id="list1" class="sortlist">
+        <!-- <li><span class="handle">☰</span><span>Faith and Life</span><button class="delbtn">DELETE</button></li> -->
+      </ul>
     </div>
     <div class="container">
-        <h1>📋 In-Progress</h1>
-        <button class="addbtn" onclick="addItem('list2')">+ Add Project</button>
-        <ul id="list2" class="sortlist">
-            <!-- <li><span class="handle">☰</span><span>Bag and Barcode</span><button class="delbtn">DELETE</button></li> -->
-        </ul>
+      <h1>📋 In-Progress</h1>
+      <button class="addbtn" onclick="addItem('list2')">+ Add Project</button>
+      <ul id="list2" class="sortlist">
+        <!-- <li><span class="handle">☰</span><span>Bag and Barcode</span><button class="delbtn">DELETE</button></li> -->
+      </ul>
     </div>
     <div class="container">
-    <h1>✅ Completed</h1>
-    <ul id="list3" class="sortlist">
-        
-    </ul>
-</div>
+      <h1>✅ Completed</h1>
+      <ul id="list3" class="sortlist"></ul>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <h2>Add New Task</h2>
+            <input type="text" id="task-input" placeholder="Enter task name...">
+
+            <div class="modal-buttons">
+                <button id="save-btn">Save</button>
+                <button id="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const element1 = document.getElementById('list1');
-        new Sortable(element1, {
-            handle: '.handle',
-            group: 'shared',
-            animation: 150,  // Fixed: was "Animation" (capital A doesn't work)
-            ghostClass: 'sortable-ghost',
-            chosenClass: 'sortable-chosen',
-            dragClass: 'sortable-drag',
-            onEnd: function() {
-                saveToLocalStorage();
-            }
-        });
-        const element2 = document.getElementById('list2');
-        new Sortable(element2, {
-            handle: '.handle',
-            group: 'shared',
-            animation: 150,  // Fixed: was "Animation" (capital A doesn't work)
-            ghostClass: 'sortable-ghost',
-            chosenClass: 'sortable-chosen',
-            dragClass: 'sortable-drag',
-            onEnd: function() {
-                saveToLocalStorage();
-            }
-        });
-        const element3 = document.getElementById('list3');
-        new Sortable(element3, {
-            handle: '.handle',
-            group: 'shared',
-            animation: 150,  // Fixed: was "Animation" (capital A doesn't work)
-            ghostClass: 'sortable-ghost',
-            chosenClass: 'sortable-chosen',
-            dragClass: 'sortable-drag',
-            onEnd: function() {
-                saveToLocalStorage();
-            }
-        });
+      const element1 = document.getElementById("list1");
+      new Sortable(element1, {
+        handle: ".handle",
+        group: "shared",
+        animation: 150, // Fixed: was "Animation" (capital A doesn't work)
+        ghostClass: "sortable-ghost",
+        chosenClass: "sortable-chosen",
+        dragClass: "sortable-drag",
+        onEnd: function () {
+          saveToLocalStorage();
+        },
+      });
+      const element2 = document.getElementById("list2");
+      new Sortable(element2, {
+        handle: ".handle",
+        group: "shared",
+        animation: 150, // Fixed: was "Animation" (capital A doesn't work)
+        ghostClass: "sortable-ghost",
+        chosenClass: "sortable-chosen",
+        dragClass: "sortable-drag",
+        onEnd: function () {
+          saveToLocalStorage();
+        },
+      });
+      const element3 = document.getElementById("list3");
+      new Sortable(element3, {
+        handle: ".handle",
+        group: "shared",
+        animation: 150, // Fixed: was "Animation" (capital A doesn't work)
+        ghostClass: "sortable-ghost",
+        chosenClass: "sortable-chosen",
+        dragClass: "sortable-drag",
+        onEnd: function () {
+          saveToLocalStorage();
+        },
+      });
 
-        document.getElementById('list1').addEventListener('click', function(event) {
-            if (event.target.classList.contains('delbtn')) {
-                event.target.closest('li').remove();
-                saveToLocalStorage();
-            }
-        });
-        document.getElementById('list2').addEventListener('click', function(event) {
-            if (event.target.classList.contains('delbtn')) {
-                event.target.closest('li').remove();
-                saveToLocalStorage();
-            }
-        });
-        document.getElementById('list3').addEventListener('click', function(event) {
-            if (event.target.classList.contains('delbtn')) {
-                event.target.closest('li').remove();
-                saveToLocalStorage();
-            }
-        });
-
-        function addItem(listId) {
-            const itemName = prompt('Enter Project Name: ');
-            console.log('Item name:', itemName);
-            const whichList = document.getElementById(listId);
-            console.log('Which list:', whichList);
-            const newLi = document.createElement('li');
-             console.log('Li innerHTML:', newLi.innerHTML);
-
-            newLi.innerHTML = `<span class="handle">☰</span><span>${itemName}</span><button class="delbtn">DELETE</button>`;
-            whichList.appendChild(newLi);
-            console.log('Appended!');
+      document
+        .getElementById("list1")
+        .addEventListener("click", function (event) {
+          if (event.target.classList.contains("delbtn")) {
+            event.target.closest("li").remove();
             saveToLocalStorage();
+          }
+        });
+      document
+        .getElementById("list2")
+        .addEventListener("click", function (event) {
+          if (event.target.classList.contains("delbtn")) {
+            event.target.closest("li").remove();
+            saveToLocalStorage();
+          }
+        });
+      document
+        .getElementById("list3")
+        .addEventListener("click", function (event) {
+          if (event.target.classList.contains("delbtn")) {
+            event.target.closest("li").remove();
+            saveToLocalStorage();
+          }
+        });
+
+      function addItem(listId) {
+        const itemName = prompt("Enter Project Name: ");
+        console.log("Item name:", itemName);
+        const whichList = document.getElementById(listId);
+        console.log("Which list:", whichList);
+        const newLi = document.createElement("li");
+        console.log("Li innerHTML:", newLi.innerHTML);
+
+        newLi.innerHTML = `<span class="handle">☰</span><span>${itemName}</span><button class="delbtn">DELETE</button>`;
+        whichList.appendChild(newLi);
+        console.log("Appended!");
+        saveToLocalStorage();
+      }
+
+      function saveToLocalStorage() {
+        const list1 = document.getElementById("list1");
+        const list2 = document.getElementById("list2");
+        const list3 = document.getElementById("list3");
+
+        const list1Items = list1.children;
+        const list2Items = list2.children;
+        const list3Items = list3.children;
+
+        const list1Data = [];
+        const list2Data = [];
+        const list3Data = [];
+
+        console.log(list1);
+        console.log(list2);
+        console.log(list3);
+
+        for (let i = 0; i < list1Items.length; i++) {
+          const li = list1Items[i];
+          const taskName = li.children[1].textContent;
+          list1Data.push(taskName);
+        }
+        for (let i = 0; i < list2Items.length; i++) {
+          const li = list2Items[i];
+          const taskName = li.children[1].textContent;
+          list2Data.push(taskName);
+        }
+        for (let i = 0; i < list3Items.length; i++) {
+          const li = list3Items[i];
+          const taskName = li.children[1].textContent;
+          list3Data.push(taskName);
         }
 
-        function saveToLocalStorage() {
-            const list1 = document.getElementById('list1');
-            const list2 = document.getElementById('list2');
-            const list3 = document.getElementById('list3');
+        const allData = {
+          list1: list1Data,
+          list2: list2Data,
+          list3: list3Data,
+        };
 
-            const list1Items = list1.children;
-            const list2Items = list2.children;
-            const list3Items = list3.children;
+        localStorage.setItem("taskLists", JSON.stringify(allData));
+        console.log("Saved!", allData);
+      }
 
-            const list1Data = [];
-            const list2Data = [];
-            const list3Data = [];
+      function loadFromLocalStorage() {
+        const savedData = localStorage.getItem("taskLists");
 
-            console.log(list1)
-            console.log(list2)
-            console.log(list3)
-
-            for (let i = 0; i < list1Items.length; i++) {
-                const li = list1Items[i];
-                const taskName = li.children[1].textContent;
-                list1Data.push(taskName);
-            }
-            for (let i = 0; i < list2Items.length; i++) {
-                const li = list2Items[i];
-                const taskName = li.children[1].textContent;
-                list2Data.push(taskName);
-            }
-            for (let i = 0; i < list3Items.length; i++) {
-                const li = list3Items[i];
-                const taskName = li.children[1].textContent;
-                list3Data.push(taskName);
-            }
-
-            const allData = {
-                list1: list1Data,
-                list2: list2Data,
-                list3: list3Data
-            };
-
-            localStorage.setItem('taskLists', JSON.stringify(allData));
-            console.log('Saved!', allData);
+        if (savedData === null) {
+          console.log("No saved data found");
+          return;
         }
 
-        function loadFromLocalStorage() {
-            const savedData = localStorage.getItem('taskLists');
+        const allData = JSON.parse(savedData);
+        console.log("Loaded Data", allData);
 
-            if (savedData === null) {
-                console.log('No saved data found');
-                return;
-            }
+        list1.innerHTML = "";
+        list2.innerHTML = "";
+        list3.innerHTML = "";
 
-            const allData = JSON.parse(savedData);
-            console.log('Loaded Data', allData);
-
-            list1.innerHTML = "";
-            list2.innerHTML = "";
-            list3.innerHTML = "";
-            
-            for (let i = 0; i < allData.list1.length; i++) {
-                createListItem('list1', allData.list1[i]);
-            }
-            for (let i = 0; i < allData.list2.length; i++) {
-                createListItem('list2', allData.list2[i]);
-            }
-            for (let i = 0; i < allData.list3.length; i++) {
-                createListItem('list3', allData.list3[i]);
-            }
+        for (let i = 0; i < allData.list1.length; i++) {
+          createListItem("list1", allData.list1[i]);
         }
-
-        function createListItem(listId, taskName) {
-            const itemName = taskName;
-            console.log('Item name:', itemName);
-            const whichList = document.getElementById(listId);
-            console.log('Which list:', whichList);
-            const newLi = document.createElement('li');
-             console.log('Li innerHTML:', newLi.innerHTML);
-
-            newLi.innerHTML = `<span class="handle">☰</span><span>${itemName}</span><button class="delbtn">DELETE</button>`;
-            whichList.appendChild(newLi);
-            console.log('Appended!');
+        for (let i = 0; i < allData.list2.length; i++) {
+          createListItem("list2", allData.list2[i]);
         }
-        loadFromLocalStorage();
+        for (let i = 0; i < allData.list3.length; i++) {
+          createListItem("list3", allData.list3[i]);
+        }
+      }
+
+      function createListItem(listId, taskName) {
+        const itemName = taskName;
+        console.log("Item name:", itemName);
+        const whichList = document.getElementById(listId);
+        console.log("Which list:", whichList);
+        const newLi = document.createElement("li");
+        console.log("Li innerHTML:", newLi.innerHTML);
+
+        newLi.innerHTML = `<span class="handle">☰</span><span>${itemName}</span><button class="delbtn">DELETE</button>`;
+        whichList.appendChild(newLi);
+        console.log("Appended!");
+      }
+      loadFromLocalStorage();
     </script>
-</body>
+  </body>
 </html>
