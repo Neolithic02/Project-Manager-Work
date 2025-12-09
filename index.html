@@ -141,7 +141,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.5);
       }
       .modal-content {
         position: relative;
@@ -174,16 +174,16 @@
       <ul id="list3" class="sortlist"></ul>
     </div>
     <div id="myModal" class="modal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <h2>Add New Task</h2>
-            <input type="text" id="task-input" placeholder="Enter task name...">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <h2>Add New Task</h2>
+        <input type="text" id="task-input" placeholder="Enter task name..." />
 
-            <div class="modal-buttons">
-                <button id="save-btn">Save</button>
-                <button id="cancel-btn">Cancel</button>
-            </div>
+        <div class="modal-buttons">
+          <button id="save-btn">Save</button>
+          <button id="cancel-btn">Cancel</button>
         </div>
+      </div>
     </div>
 
     <script>
@@ -224,30 +224,24 @@
         },
       });
 
-      document
-        .getElementById("list1")
-        .addEventListener("click", function (event) {
-          if (event.target.classList.contains("delbtn")) {
-            event.target.closest("li").remove();
-            saveToLocalStorage();
-          }
-        });
-      document
-        .getElementById("list2")
-        .addEventListener("click", function (event) {
-          if (event.target.classList.contains("delbtn")) {
-            event.target.closest("li").remove();
-            saveToLocalStorage();
-          }
-        });
-      document
-        .getElementById("list3")
-        .addEventListener("click", function (event) {
-          if (event.target.classList.contains("delbtn")) {
-            event.target.closest("li").remove();
-            saveToLocalStorage();
-          }
-        });
+      document.getElementById("list1").addEventListener("click", function (event) {
+        if (event.target.classList.contains("delbtn")) {
+          event.target.closest("li").remove();
+          saveToLocalStorage();
+        }
+      });
+      document.getElementById("list2").addEventListener("click", function (event) {
+        if (event.target.classList.contains("delbtn")) {
+          event.target.closest("li").remove();
+          saveToLocalStorage();
+        }
+      });
+      document.getElementById("list3").addEventListener("click", function (event) {
+        if (event.target.classList.contains("delbtn")) {
+          event.target.closest("li").remove();
+          saveToLocalStorage();
+        }
+      });
 
       function addItem(listId) {
         const itemName = prompt("Enter Project Name: ");
